@@ -24,4 +24,5 @@ jobs:
             qa-live-report.json
             qa-desktop.png
             qa-mobile.png
+            qa-mobile-gallery.png
           retention-days: 7
