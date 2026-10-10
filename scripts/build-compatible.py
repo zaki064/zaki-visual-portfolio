@@ -2,7 +2,9 @@
 """Add mathematically lossless VP9 alternatives; keep primary HEVC originals."""
 import hashlib
 import json
+import math
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import tempfile
@@ -49,6 +51,9 @@ for asset in assets:
     playback_hash = frame_hash(output/'index.m3u8')
     assert original_hash == playback_hash, f'Decoded pixel mismatch: {slug}'
     playlist=(output/'index.m3u8').read_text()
+    longest=max(float(n) for n in re.findall(r'#EXTINF:([\d.]+)',playlist))
+    playlist=re.sub(r'#EXT-X-TARGETDURATION:\d+',f'#EXT-X-TARGETDURATION:{max(1,math.ceil(longest))}',playlist)
+    (output/'index.m3u8').write_text(playlist)
     segments=[line for line in playlist.splitlines() if line and not line.startswith('#')]
     sizes=[(output/name).stat().st_size for name in segments]
     assert max(sizes)<95*1024*1024

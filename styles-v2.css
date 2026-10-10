@@ -31,12 +31,15 @@
   .frame-reel, .showreel-player { min-height: 0 !important; height: 100% !important; }
 
   .brand-films-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 32px !important; }
+  .brand-film:nth-child(n) { grid-area: auto !important; grid-column: 1 / -1 !important; width: 100% !important; justify-self: stretch !important; }
   .celebrity-grid, .creative-grid, .archive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 24px 12px !important; }
   .ai-grid, .ai-grid-second { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 24px 12px !important; }
   .ai-grid .ai-film:nth-child(n), .ai-grid-second .ai-film:nth-child(n) {
     grid-area: auto !important;
     width: auto !important;
   }
+  .ai-film .collection-picture { height: auto !important; aspect-ratio: 9 / 16 !important; }
+  .ai-film .video-fullscreen { position: static !important; margin: 0 !important; }
   .ai-grid .ai-film:last-child, .ai-grid-second .ai-film:last-child:nth-child(odd) {
     grid-column: 1 / -1 !important;
     width: calc(50% - 6px) !important;

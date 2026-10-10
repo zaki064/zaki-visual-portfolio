@@ -3,6 +3,7 @@
 import concurrent.futures
 import hashlib
 import json
+import math
 import os
 from pathlib import Path
 import re
@@ -84,6 +85,9 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         packaged_hash = video_hash(output / 'index.m3u8')
         assert original_hash == packaged_hash, f'Video packet mismatch: {slug}'
         playlist = (output / 'index.m3u8').read_text()
+        longest = max(float(n) for n in re.findall(r'#EXTINF:([\d.]+)', playlist))
+        playlist = re.sub(r'#EXT-X-TARGETDURATION:\d+', f'#EXT-X-TARGETDURATION:{max(1, math.ceil(longest))}', playlist)
+        (output / 'index.m3u8').write_text(playlist)
         segments = [line for line in playlist.splitlines() if line and not line.startswith('#')]
         sizes = [((output / name).stat().st_size, name) for name in segments]
         assert max(s for s, _ in sizes) < 95 * 1024 * 1024, f'Segment exceeds safe Git file size: {slug}'
