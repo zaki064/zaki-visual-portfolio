@@ -1,10 +1,14 @@
 name: Validate portfolio playback and mobile layout
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/qa-live.yml']
 permissions:
   contents: read
 jobs:
   validate:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Run one-time ZAKI playback and mobile verification'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
