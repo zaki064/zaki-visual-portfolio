@@ -267,7 +267,7 @@ window.ZakiVideoV2 = function (reduced) {
     observer.observe(r.player);
     // Listen on the stable picture wrapper, not the element being scaled.
     // This prevents cover fades and spring transforms from cancelling hover.
-    const hotspot = r.player.closest('.collection-picture, .archive-media') || r.player;
+    const hotspot = r.player.closest('.collection-card, .archive-card') || r.player.closest('.collection-picture, .archive-media') || r.player;
     const hover = e => {
       if (r.reel || !fine.matches || e.pointerType === 'touch' || reduced.matches) return;
       if (r.hovered) return;
