@@ -125,7 +125,7 @@ window.ZakiVideoV2 = function (reduced) {
       }
       r.hls?.destroy();
       const hls = r.hls = new Hls({
-        autoStartLoad: false, enableWorker: true, startPosition: 0,
+        autoStartLoad: false, enableWorker: true, progressive: true, startPosition: 0,
         maxBufferLength: 6, maxMaxBufferLength: 10, maxBufferSize: 32 * 1024 * 1024,
         backBufferLength: 1, maxFragLookUpTolerance: 0.1,
         manifestLoadPolicy: { default: { maxTimeToFirstByteMs: 8000, maxLoadTimeMs: 12000,
@@ -242,12 +242,18 @@ window.ZakiVideoV2 = function (reduced) {
     original.setAttribute('aria-label', '打开原始画质文件：' + r.video.getAttribute('aria-label'));
     r.player.querySelector('.video-controls')?.append(original);
     observer.observe(r.player);
-    listen(r.player, 'pointerenter', e => {
+    // Listen on the stable picture wrapper, not the element being scaled.
+    // This prevents cover fades and spring transforms from cancelling hover.
+    const hotspot = r.player.closest('.collection-picture, .archive-media') || r.player;
+    const hover = e => {
       if (r.reel || !fine.matches || e.pointerType === 'touch' || reduced.matches) return;
+      if (r.hovered) return;
       r.hovered = true; r.pausedByUser = false;
       r.intent = setTimeout(() => play(r), 90);
-    });
-    listen(r.player, 'pointerleave', () => { if (!r.reel) leave(r); });
+    };
+    listen(hotspot, 'pointerenter', hover);
+    listen(hotspot, 'pointermove', hover);
+    listen(hotspot, 'pointerleave', () => { if (!r.reel) leave(r); });
     listen(r.player, 'pointerup', e => {
       if (e.pointerType !== 'touch' || e.target.closest('button,a')) return;
       unlocked = true; r.manual = true; r.visible = true; r.pausedByUser = false; play(r);
