@@ -276,7 +276,9 @@ window.ZakiVideoV2 = function (reduced) {
     };
     listen(hotspot, 'pointerenter', hover);
     listen(hotspot, 'pointermove', hover);
-    listen(hotspot, 'pointerleave', () => { if (!r.reel) leave(r); });
+    listen(hotspot, 'pointerleave', e => {
+      if (!r.reel && fine.matches && e.pointerType !== 'touch') leave(r);
+    });
     listen(r.player, 'pointerup', e => {
       if (e.pointerType !== 'touch' || e.target.closest('button,a')) return;
       unlocked = true; r.manual = true; r.visible = true; r.pausedByUser = false; play(r);

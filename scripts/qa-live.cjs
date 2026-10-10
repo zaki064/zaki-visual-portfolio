@@ -8,11 +8,11 @@ const BASE='https://zaki064.github.io/zaki-visual-portfolio/';
  page.on('pageerror',e=>errors.push(e.message));
  page.on('requestfailed',r=>failures.push({url:r.url(),error:r.failure()?.errorText}));
  for(let attempt=0;attempt<12;attempt++){
-   await page.goto(BASE+'?build=stream-v5',{waitUntil:'domcontentloaded'});
-   if(await page.locator('meta[name="zaki-build"]').getAttribute('content')==='20261010-original-stream-v5') break;
+   await page.goto(BASE+'?verification='+Date.now(),{waitUntil:'domcontentloaded'});
+   if(await page.locator('meta[name="zaki-build"]').getAttribute('content')==='20261010-original-stream-v6') break;
    await page.waitForTimeout(5000);
  }
- assert.equal(await page.locator('meta[name="zaki-build"]').getAttribute('content'),'20261010-original-stream-v5');
+ assert.equal(await page.locator('meta[name="zaki-build"]').getAttribute('content'),'20261010-original-stream-v6');
  await page.waitForSelector('video[data-stream]',{timeout:30000});
  assert.equal(await page.locator('video[data-stream]').count(),33);
  await page.locator('[data-enable-audio]').click();
@@ -71,7 +71,7 @@ const BASE='https://zaki064.github.io/zaki-visual-portfolio/';
      await p.screenshot({path:'qa-mobile.png'});
      await p.locator('[data-enable-audio]').click();
      const touchPlayer=p.locator('video[data-stream]').nth(1).locator('..');
-     await touchPlayer.locator('[data-video-action="play"]').tap();
+     await touchPlayer.locator('.video-cover').tap();
      await p.waitForFunction(()=>{const v=document.querySelectorAll('video')[1];return !v.paused&&v.currentTime>.5&&!v.muted},null,{timeout:30000});
      layouts[layouts.length-1].touchPlaybackWithSound=true;
      await p.screenshot({path:'qa-mobile-gallery.png'});
