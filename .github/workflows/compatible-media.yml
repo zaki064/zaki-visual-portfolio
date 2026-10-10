@@ -1,0 +1,19 @@
+name: Add pixel-identical browser compatibility
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  compatible:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install FFmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Build and verify lossless compatible streams
+        run: python3 scripts/build-compatible.py
