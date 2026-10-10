@@ -62,7 +62,15 @@ const BASE='https://zaki064.github.io/zaki-visual-portfolio/';
    assert(layout.scrollWidth<=layout.width+1,`Horizontal overflow at ${width}`);
    assert(layout.frames.every(f=>f.left>=-1&&f.right<=layout.width+1),`Media alignment at ${width}`);
    layouts.push({width,scrollWidth:layout.scrollWidth,frames:layout.frames.length});
-   if(width===390){await p.screenshot({path:'qa-mobile.png'});}
+   if(width===390){
+     await p.screenshot({path:'qa-mobile.png'});
+     await p.locator('[data-enable-audio]').click();
+     const touchPlayer=p.locator('video[data-stream]').nth(1).locator('..');
+     await touchPlayer.locator('[data-video-action="play"]').tap();
+     await p.waitForFunction(()=>{const v=document.querySelectorAll('video')[1];return !v.paused&&v.currentTime>.5&&!v.muted},null,{timeout:30000});
+     layouts[layouts.length-1].touchPlaybackWithSound=true;
+     await p.screenshot({path:'qa-mobile-gallery.png'});
+   }
    await c.close();
  }
  await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:'qa-desktop.png'});
