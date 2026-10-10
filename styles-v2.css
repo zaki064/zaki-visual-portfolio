@@ -81,3 +81,6 @@
 
 
 .stream-status{position:absolute;inset:auto 12px 56px;z-index:5;padding:10px 14px;background:#140e14e8;color:#fff;font-size:12px;line-height:1.6;border-radius:12px}.stream-status[hidden]{display:none}.original-link{display:inline-flex;align-items:center;justify-content:center;padding:8px 11px;color:inherit;font-size:12px;border-radius:99px;background:#ffffff18;text-decoration:none}.original-link:hover{background:#f69fc4;color:#100a0e}.video-player>video{object-fit:cover}.video-loading{pointer-events:none}
+
+/* Keep narrow-screen headings readable while retaining desktop split motion. */
+@media (max-width:760px) and (orientation:portrait){[data-scroll-scene] .split-line{transform:none!important}}
