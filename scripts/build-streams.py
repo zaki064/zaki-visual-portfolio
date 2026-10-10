@@ -12,7 +12,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = 'zaki064/zaki-visual-portfolio'
-BRANCH = 'stream-media-v2'
+BRANCH = 'stream-media-v3'
 RAW = f'https://raw.githubusercontent.com/{REPO}/{BRANCH}'
 
 def run(*args, cwd=None):
@@ -75,7 +75,10 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         command += ['-c:a', 'copy'] if audio and audio['codec_name'] == 'aac' else ['-c:a', 'aac', '-b:a', '320k', '-ac', '2']
         if video['codec_name'] == 'hevc':
             command += ['-tag:v', 'hvc1']
-        command += ['-f', 'hls', '-hls_time', '2', '-hls_playlist_type', 'vod', '-hls_segment_type', 'fmp4', '-hls_flags', 'independent_segments', '-hls_fmp4_init_filename', 'init.mp4', '-hls_segment_filename', str(output / 's%04d.m4s'), str(output / 'index.m3u8')]
+        # Split at packet boundaries instead of waiting for long original GOPs.
+        # No independent-segment tag: consecutive parts decode continuously;
+        # this portfolio restarts at zero and does not expose arbitrary seeking.
+        command += ['-f', 'hls', '-hls_time', '0.5', '-hls_playlist_type', 'vod', '-hls_segment_type', 'fmp4', '-hls_flags', 'split_by_time', '-hls_fmp4_init_filename', 'init.mp4', '-hls_segment_filename', str(output / 's%04d.m4s'), str(output / 'index.m3u8')]
         subprocess.run(command, check=True)
         original_hash = video_hash(source)
         packaged_hash = video_hash(output / 'index.m3u8')
@@ -107,13 +110,11 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
                 batch_bytes = 0
         source.unlink()
 
-report = {'version': '2026-10-10-stream-v2', 'videoReencoded': False, 'videoPacketHashesVerified': True, 'totalOriginalBytes': sum(a['originalBytes'] for a in audit), 'startupBytes': sum(a['startupBytes'] for a in audit), 'assets': audit}
+report = {'version': '2026-10-10-stream-v3', 'videoReencoded': False, 'videoPacketHashesVerified': True, 'totalOriginalBytes': sum(a['originalBytes'] for a in audit), 'startupBytes': sum(a['startupBytes'] for a in audit), 'assets': audit}
 (ROOT / 'stream-audit.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
 print('ALL ORIGINAL VIDEO PACKET HASHES VERIFIED', flush=True)
 if not os.environ.get('ZAKI_LOCAL_TEST'):
-    assert (ROOT / 'index-v2.html').exists(), 'Player page not staged'
-    shutil.copy2(ROOT / 'index-v2.html', ROOT / 'index.html')
-    run('git', 'add', 'streams', 'stream-audit.json', 'index.html', cwd=ROOT)
+    run('git', 'add', 'streams', 'stream-audit.json', cwd=ROOT)
     run('git', 'commit', '-m', 'Publish verified lossless streams and optimized ZAKI player', cwd=ROOT)
     run('git', 'pull', '--rebase', 'origin', 'main', cwd=ROOT)
     run('git', 'push', 'origin', 'HEAD:refs/heads/main', cwd=ROOT)
