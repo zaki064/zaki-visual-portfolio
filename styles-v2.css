@@ -13,9 +13,13 @@
   .nav { left: 16px !important; right: 16px !important; }
   .pointer-aura { display: none !important; }
 
-  .hero { min-height: 100svh !important; padding-inline: 20px !important; }
-  .hero-statement { font-size: clamp(60px, 21vw, 102px) !important; line-height: .82 !important; }
-  .hero-lower, .section-heading, .about-intro, .contact-top, .contact-details, .resume-grid {
+  .hero { min-height: 0 !important; padding-inline: 20px !important; }
+  .hero h1 { font-size: clamp(84px, 29vw, 132px) !important; }
+  .hero-statement { font-size: clamp(20px, 5.6vw, 25px) !important; line-height: 1.55 !important; }
+  .hero-lower { display: grid !important; grid-template-columns: minmax(0,1fr) 84px !important; gap: 18px !important; align-items: start !important; }
+  .hero-lower > div { min-width: 0; }
+  .section-heading, .about-intro, .contact-top, .contact-details { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 18px !important; }
+  .resume-grid {
     grid-template-columns: 1fr !important;
     gap: 18px !important;
   }
@@ -69,7 +73,7 @@
 
 @media (max-width: 360px) and (orientation: portrait) {
   .celebrity-grid, .creative-grid, .archive-grid { grid-template-columns: minmax(0, 1fr) !important; }
-  .hero-statement { font-size: clamp(54px, 20vw, 78px) !important; }
+  .hero-statement { font-size: 20px !important; }
 }
 
 
