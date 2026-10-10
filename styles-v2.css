@@ -22,9 +22,9 @@
 
   .cinema-content { padding-inline: 0 !important; }
   .cinema-label, .cinema-caption { padding-inline: 16px !important; }
-  .cinema-stage { width: 100vw !important; margin-inline: calc(50% - 50vw) !important; }
-  .cinema-screen { min-height: 58svh !important; border-radius: 0 !important; }
-  .frame-reel, .showreel-player { min-height: 58svh !important; }
+  .cinema-stage { width: 100vw !important; margin-inline: calc(50% - 50vw) !important; aspect-ratio: 5076 / 2160 !important; }
+  .cinema-screen { min-height: 0 !important; border-radius: 0 !important; }
+  .frame-reel, .showreel-player { min-height: 0 !important; height: 100% !important; }
 
   .brand-films-grid { grid-template-columns: minmax(0, 1fr) !important; gap: 32px !important; }
   .celebrity-grid, .creative-grid, .archive-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 24px 12px !important; }
