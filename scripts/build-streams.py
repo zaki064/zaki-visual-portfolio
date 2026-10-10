@@ -9,12 +9,10 @@ import re
 import shutil
 import subprocess
 import tempfile
-import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = 'zaki064/zaki-visual-portfolio'
 BRANCH = 'stream-media-v2'
-API = f'https://api.github.com/repos/{REPO}/releases/tags/media-v1'
 RAW = f'https://raw.githubusercontent.com/{REPO}/{BRANCH}'
 
 def run(*args, cwd=None):
@@ -36,8 +34,14 @@ if os.environ.get('ZAKI_LOCAL_TEST'):
     media.mkdir()
     assets = [a for a in assets if a['name'] == 'zaki-showreel-web.mp4']
 else:
-    run('git', 'worktree', 'add', '--detach', str(media), 'HEAD', cwd=ROOT)
-    run('git', 'switch', '--orphan', BRANCH, cwd=media)
+    existing = run('git', 'ls-remote', '--heads', 'origin', BRANCH, cwd=ROOT)
+    if existing:
+        run('git', 'fetch', '--depth=1', 'origin', BRANCH, cwd=ROOT)
+        run('git', 'worktree', 'add', '--detach', str(media), 'FETCH_HEAD', cwd=ROOT)
+        run('git', 'switch', '-c', BRANCH, cwd=media)
+    else:
+        run('git', 'worktree', 'add', '--detach', str(media), 'HEAD', cwd=ROOT)
+        run('git', 'switch', '--orphan', BRANCH, cwd=media)
     run('git', 'config', 'user.name', 'ZAKI Portfolio Builder', cwd=ROOT)
     run('git', 'config', 'user.email', 'github-actions[bot]@users.noreply.github.com', cwd=ROOT)
 
@@ -65,7 +69,7 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         assert video['codec_name'] in ('h264', 'hevc'), f"Unsupported video codec {video['codec_name']}: {asset['name']}"
         slug = Path(asset['name']).stem
         output = media / slug
-        output.mkdir()
+        output.mkdir(exist_ok=True)
         command = ['ffmpeg', '-v', 'error', '-y', '-i', str(source), '-map', '0:v:0', '-map', '0:a:0?', '-c:v', 'copy']
         # Copy AAC unchanged. PCM and other non-web audio become high-quality AAC.
         command += ['-c:a', 'copy'] if audio and audio['codec_name'] == 'aac' else ['-c:a', 'aac', '-b:a', '320k', '-ac', '2']
@@ -95,7 +99,8 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         print(json.dumps(audit[-1]), flush=True)
         if not os.environ.get('ZAKI_LOCAL_TEST'):
             run('git', 'add', slug, cwd=media)
-            run('git', 'commit', '-m', f'Package original-quality stream: {slug}', cwd=media)
+            if run('git', 'diff', '--cached', '--name-only', cwd=media):
+                run('git', 'commit', '-m', f'Package original-quality stream: {slug}', cwd=media)
             batch_bytes += sum(s for s, _ in sizes)
             if batch_bytes > 550 * 1024 * 1024 or index == len(assets) - 1:
                 run('git', 'push', 'origin', f'HEAD:refs/heads/{BRANCH}', cwd=media)
@@ -106,6 +111,9 @@ report = {'version': '2026-10-10-stream-v2', 'videoReencoded': False, 'videoPack
 (ROOT / 'stream-audit.json').write_text(json.dumps(report, ensure_ascii=False, indent=2))
 print('ALL ORIGINAL VIDEO PACKET HASHES VERIFIED', flush=True)
 if not os.environ.get('ZAKI_LOCAL_TEST'):
-    run('git', 'add', 'streams', 'stream-audit.json', cwd=ROOT)
-    run('git', 'commit', '-m', 'Publish lossless stream manifests and startup fragments', cwd=ROOT)
+    assert (ROOT / 'index-v2.html').exists(), 'Player page not staged'
+    shutil.copy2(ROOT / 'index-v2.html', ROOT / 'index.html')
+    run('git', 'add', 'streams', 'stream-audit.json', 'index.html', cwd=ROOT)
+    run('git', 'commit', '-m', 'Publish verified lossless streams and optimized ZAKI player', cwd=ROOT)
+    run('git', 'pull', '--rebase', 'origin', 'main', cwd=ROOT)
     run('git', 'push', 'origin', 'HEAD:refs/heads/main', cwd=ROOT)
