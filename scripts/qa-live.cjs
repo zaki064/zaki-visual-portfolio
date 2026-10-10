@@ -29,20 +29,28 @@ const BASE='https://zaki064.github.io/zaki-visual-portfolio/';
  await page.evaluate(()=>scrollTo(0,0));
  await page.waitForFunction(()=>document.querySelector('video').paused);
  const upExit=await page.locator('video').first().evaluate(v=>({paused:v.paused,time:v.currentTime}));assert(upExit.time<.1);
- const galleries=[];
+ const galleries=[], galleryErrors=[];
  // Test every actual video, sequentially, with hover as the only play action.
  for(let i=1;i<33;i++){
    const video=page.locator('video[data-stream]').nth(i), player=video.locator('..');
    console.log('CHECK',i,await video.getAttribute('data-stream'));
+   const hoverStart=Date.now();
+   try {
    await page.mouse.move(5,5);
-   await player.scrollIntoViewIfNeeded();
+   await player.evaluate(e=>{const r=e.getBoundingClientRect();scrollTo(0,scrollY+r.top-innerHeight/2+r.height/2);});
+   await page.waitForTimeout(450);
    await player.hover();
-   await page.waitForFunction(index=>{const v=document.querySelectorAll('video')[index];return !v.paused&&v.readyState>=3&&v.videoWidth>0;},i,{timeout:30000});
+   await page.waitForFunction(index=>{const v=document.querySelectorAll('video')[index];return !v.paused&&v.readyState>=3&&v.videoWidth>0&&v.currentTime>.5;},i,{timeout:30000});
    const state=await video.evaluate(v=>({label:v.getAttribute('aria-label'),width:v.videoWidth,height:v.videoHeight,muted:v.muted,paused:v.paused,error:v.error?.code||null}));
    assert.equal(state.muted,false);assert.equal(state.error,null);
    console.log('PLAYING',JSON.stringify(state));
    await page.waitForFunction(()=>[...document.querySelectorAll('video')].filter(v=>!v.paused).length===1,null,{timeout:5000});
-   galleries.push(state);
+   galleries.push({...state,startMs:Date.now()-hoverStart});
+   } catch(error) {
+     const state=await video.evaluate(v=>({label:v.getAttribute('aria-label'),paused:v.paused,ready:v.readyState,time:v.currentTime,error:v.error?.message,status:v.closest('.video-player').querySelector('.stream-status')?.textContent,hover:v.closest('.collection-picture,.archive-media')?.matches(':hover')}));
+     console.log('GALLERY_ERROR',i,JSON.stringify(state),error.message);
+     galleryErrors.push({index:i,...state,message:error.message});
+   }
    await page.mouse.move(5,5);
    await page.waitForFunction(index=>document.querySelectorAll('video')[index].paused,i);
  }
@@ -59,7 +67,8 @@ const BASE='https://zaki064.github.io/zaki-visual-portfolio/';
  }
  await page.evaluate(()=>scrollTo(0,0));await page.screenshot({path:'qa-desktop.png'});
  assert.equal(errors.length,0,errors.join('\n'));
- const report={first,startMs,downExit,returnUp,upExit,galleries,layouts,errors,failures};
+ const report={first,startMs,downExit,returnUp,upExit,galleries,galleryErrors,layouts,errors,failures};
  fs.writeFileSync('qa-live-report.json',JSON.stringify(report,null,2));console.log(JSON.stringify(report,null,2));
  await browser.close();
+ assert.equal(galleryErrors.length,0,'Some real video playback checks failed');
 })().catch(e=>{console.error(e);process.exit(1)});
