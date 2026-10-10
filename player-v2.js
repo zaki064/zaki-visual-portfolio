@@ -123,6 +123,7 @@ window.ZakiVideoV2 = function (reduced) {
         r.sourceReady = true;
         return;
       }
+      r.hls?.destroy();
       const hls = r.hls = new Hls({
         autoStartLoad: false, enableWorker: true, startPosition: 0,
         maxBufferLength: 6, maxMaxBufferLength: 10, maxBufferSize: 32 * 1024 * 1024,
@@ -192,7 +193,7 @@ window.ZakiVideoV2 = function (reduced) {
       if (!valid()) return;
       r.hls?.startLoad(r.video.currentTime || 0);
       r.video.preload = 'auto';
-      r.video.muted = mode === 'muted' || !unlocked;
+      r.video.muted = mode === 'muted';
       r.video.volume = 1;
       try { await r.video.play(); }
       catch (error) {
@@ -268,6 +269,7 @@ window.ZakiVideoV2 = function (reduced) {
     });
     listen(r.video, 'playing', () => {
       if (!wanted(r) || active !== r) { pause(r); return; }
+      if (!r.video.muted && mode === 'sound') unlocked = true;
       r.player.setAttribute('data-playing', ''); r.player.removeAttribute('data-loading'); status(r); ui(r);
     });
     listen(r.video, 'waiting', () => { if (wanted(r)) r.player.setAttribute('data-loading', ''); });
