@@ -33,12 +33,15 @@ const BASE='https://zaki064.github.io/zaki-visual-portfolio/';
  // Test every actual video, sequentially, with hover as the only play action.
  for(let i=1;i<33;i++){
    const video=page.locator('video[data-stream]').nth(i), player=video.locator('..');
+   console.log('CHECK',i,await video.getAttribute('data-stream'));
+   await page.mouse.move(5,5);
    await player.scrollIntoViewIfNeeded();
    await player.hover();
    await page.waitForFunction(index=>{const v=document.querySelectorAll('video')[index];return !v.paused&&v.readyState>=3&&v.videoWidth>0;},i,{timeout:30000});
    const state=await video.evaluate(v=>({label:v.getAttribute('aria-label'),width:v.videoWidth,height:v.videoHeight,muted:v.muted,paused:v.paused,error:v.error?.code||null}));
    assert.equal(state.muted,false);assert.equal(state.error,null);
-   assert.equal(await page.locator('video').evaluateAll(vs=>vs.filter(v=>!v.paused).length),1);
+   console.log('PLAYING',JSON.stringify(state));
+   await page.waitForFunction(()=>[...document.querySelectorAll('video')].filter(v=>!v.paused).length===1,null,{timeout:5000});
    galleries.push(state);
    await page.mouse.move(5,5);
    await page.waitForFunction(index=>document.querySelectorAll('video')[index].paused,i);
