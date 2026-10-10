@@ -1,14 +1,10 @@
 name: Add pixel-identical browser compatibility
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - '.github/workflows/compatible-media.yml'
 permissions:
   contents: read
 jobs:
   compatible:
-    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Run one-time ZAKI pixel-identical compatibility repair'
     permissions:
       contents: write
     runs-on: ubuntu-latest
