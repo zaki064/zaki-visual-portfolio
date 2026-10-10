@@ -1,6 +1,9 @@
 name: Build original-quality video streams
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/build-streams.yml'
 permissions:
   contents: read
 concurrency:
@@ -8,6 +11,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   package:
+    if: github.event_name == 'workflow_dispatch' || github.event.head_commit.message == 'Run one-time user-authorized ZAKI short-segment refinement'
     permissions:
       contents: write
     runs-on: ubuntu-latest
