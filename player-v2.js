@@ -104,7 +104,14 @@ window.ZakiVideoV2 = function (reduced) {
     if (r.loading) return r.loading;
     r.used = ++clock;
     const generation = r.generation;
-    const source = r.video.dataset.stream;
+    let source = r.video.dataset.stream;
+    const compatible = r.video.dataset.streamCompatible;
+    if (compatible) {
+      const Source = window.ManagedMediaSource || window.MediaSource;
+      const appleNative = /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) && r.video.canPlayType('application/vnd.apple.mpegurl');
+      const hevc = Source?.isTypeSupported('video/mp4; codecs="hvc1.1.6.L123.B0"');
+      if (!appleNative && !hevc) source = compatible;
+    }
     r.loading = (async () => {
       const native = /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) && r.video.canPlayType('application/vnd.apple.mpegurl');
       if (native) {
@@ -180,6 +187,7 @@ window.ZakiVideoV2 = function (reduced) {
   };
   const play = async r => {
     if (!wanted(r)) return;
+    if (r.player.hasAttribute('data-stream-error')) { dispose(r); r.retries = 0; }
     records.forEach(other => { if (other !== r && (!other.video.paused || other === active)) pause(other); });
     active = last = r;
     const token = ++r.token;
@@ -211,7 +219,9 @@ window.ZakiVideoV2 = function (reduced) {
         return;
       }
       ui(r);
-    } catch (error) { if (valid()) fail(r, error.message); }
+    } catch (error) {
+      if (valid()) fail(r, /[\u3400-\u9fff]/.test(error.message) ? error.message : '播放暂时中断，请移入画面重试，或点击原片查看。');
+    }
   };
   const leave = r => {
     if (r.full) return;
