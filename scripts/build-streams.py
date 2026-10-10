@@ -26,8 +26,7 @@ def probe(path):
 def video_hash(path):
     return run('ffmpeg', '-v', 'error', '-i', str(path), '-map', '0:v:0', '-c:v', 'copy', '-f', 'hash', '-hash', 'sha256', '-')
 
-with urllib.request.urlopen(urllib.request.Request(API, headers={'User-Agent': 'ZAKI-media-builder'})) as response:
-    assets = json.load(response)['assets']
+assets = json.loads((ROOT / 'media-originals.json').read_text())
 assets = [a for a in assets if re.fullmatch(r'zaki-[a-z]+-(?:\d+|web)\.(?:mp4|mov)', a['name'])]
 assert len(assets) == 33, f'Expected 33 originals, got {len(assets)}'
 assets.sort(key=lambda a: (a['name'] != 'zaki-showreel-web.mp4', a['name']))
@@ -46,7 +45,10 @@ audit = []
 batch_bytes = 0
 def download(asset):
     source = temp / asset['name']
-    run('curl', '--fail', '--location', '--retry', '3', '--max-time', '300', '--silent', '--show-error', '--output', str(source), asset['browser_download_url'])
+    if os.environ.get('ZAKI_LOCAL_TEST'):
+        shutil.copy2('/tmp/zaki-showreel-original.mp4', source)
+    else:
+        run('curl', '--fail', '--location', '--retry', '3', '--max-time', '300', '--silent', '--show-error', '--output', str(source), asset['browser_download_url'])
     assert source.stat().st_size == asset['size']
     if asset.get('digest'):
         assert 'sha256:' + hashlib.file_digest(source.open('rb'), 'sha256').hexdigest() == asset['digest']
