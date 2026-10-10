@@ -7,7 +7,12 @@ const BASE='https://zaki064.github.io/zaki-visual-portfolio/';
  const page=await context.newPage();const errors=[];const failures=[];
  page.on('pageerror',e=>errors.push(e.message));
  page.on('requestfailed',r=>failures.push({url:r.url(),error:r.failure()?.errorText}));
- await page.goto(BASE+'?build=stream-v2',{waitUntil:'domcontentloaded'});
+ for(let attempt=0;attempt<12;attempt++){
+   await page.goto(BASE+'?build=stream-v5',{waitUntil:'domcontentloaded'});
+   if(await page.locator('meta[name="zaki-build"]').getAttribute('content')==='20261010-original-stream-v5') break;
+   await page.waitForTimeout(5000);
+ }
+ assert.equal(await page.locator('meta[name="zaki-build"]').getAttribute('content'),'20261010-original-stream-v5');
  await page.waitForSelector('video[data-stream]',{timeout:30000});
  assert.equal(await page.locator('video[data-stream]').count(),33);
  await page.locator('[data-enable-audio]').click();
@@ -40,8 +45,8 @@ const BASE='https://zaki064.github.io/zaki-visual-portfolio/';
    await player.evaluate(e=>{const r=e.getBoundingClientRect();scrollTo(0,scrollY+r.top-innerHeight/2+r.height/2);});
    await page.waitForTimeout(450);
    await player.hover();
-   await page.waitForFunction(index=>{const v=document.querySelectorAll('video')[index];return !v.paused&&v.readyState>=3&&v.videoWidth>0&&v.currentTime>.5;},i,{timeout:30000});
-   const state=await video.evaluate(v=>({label:v.getAttribute('aria-label'),width:v.videoWidth,height:v.videoHeight,muted:v.muted,paused:v.paused,error:v.error?.code||null}));
+   await page.waitForFunction(index=>{const v=document.querySelectorAll('video')[index];return !v.paused&&v.readyState>=3&&v.videoWidth>0&&v.currentTime>1.2;},i,{timeout:30000});
+   const state=await video.evaluate(v=>({label:v.getAttribute('aria-label'),source:v.dataset.selectedStream,width:v.videoWidth,height:v.videoHeight,muted:v.muted,paused:v.paused,error:v.error?.code||null,quality:v.getVideoPlaybackQuality?.()}));
    assert.equal(state.muted,false);assert.equal(state.error,null);
    console.log('PLAYING',JSON.stringify(state));
    await page.waitForFunction(()=>[...document.querySelectorAll('video')].filter(v=>!v.paused).length===1,null,{timeout:5000});

@@ -13,7 +13,7 @@ window.ZakiVideoV2 = function (reduced) {
     video, player: video.closest('.video-player'), reel: video.hasAttribute('data-autoplay-reel'),
     focused: false, hovered: false, manual: false, visible: false, pausedByUser: false,
     token: 0, intent: 0, hls: null, loading: null, used: 0, warm: false, retries: 0,
-    status: null, sourceReady: false, native: false, full: false, generation: 0
+    status: null, sourceReady: false, native: false, full: false, generation: 0, forceCompatible: false
   }));
   const listen = (element, event, fn, options) => {
     if (!element) return;
@@ -110,8 +110,9 @@ window.ZakiVideoV2 = function (reduced) {
       const Source = window.ManagedMediaSource || window.MediaSource;
       const appleNative = /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) && r.video.canPlayType('application/vnd.apple.mpegurl');
       const hevc = Source?.isTypeSupported('video/mp4; codecs="hvc1.1.6.L123.B0"');
-      if (!appleNative && !hevc) source = compatible;
+      if (r.forceCompatible || (!appleNative && !hevc)) source = compatible;
     }
+    r.video.dataset.selectedStream = source;
     r.loading = (async () => {
       const native = /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) && r.video.canPlayType('application/vnd.apple.mpegurl');
       if (native) {
@@ -144,6 +145,13 @@ window.ZakiVideoV2 = function (reduced) {
       });
       hls.on(Hls.Events.ERROR, (_, data) => {
         if (!data.fatal) return;
+        if (compatible && source !== compatible && (data.type === Hls.ErrorTypes.MEDIA_ERROR || /codec/i.test(data.details))) {
+          r.forceCompatible = true;
+          dispose(r);
+          r.retries = 0;
+          if (wanted(r)) play(r);
+          return;
+        }
         if (data.type === Hls.ErrorTypes.MEDIA_ERROR && r.retries++ < 1) hls.recoverMediaError();
         else fail(r, data.type === Hls.ErrorTypes.MEDIA_ERROR ? '设备暂不支持此原片编码，可点击原片查看。' : '网络连接中断，请点击重试。');
       });
