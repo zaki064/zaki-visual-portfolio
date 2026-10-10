@@ -1,0 +1,26 @@
+name: Build original-quality video streams
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: zaki-lossless-stream-build
+  cancel-in-progress: false
+jobs:
+  package:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Install FFmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Package and verify all 33 originals without video encoding
+        run: python3 scripts/build-streams.py
+      - name: Summary
+        run: |
+          echo 'All 33 originals packaged with copied video packets.' >> "$GITHUB_STEP_SUMMARY"
+          echo 'Frame dimensions, frame rate and encoded video packet hashes preserved.' >> "$GITHUB_STEP_SUMMARY"
