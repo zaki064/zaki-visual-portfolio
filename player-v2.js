@@ -204,7 +204,12 @@ window.ZakiVideoV2 = function (reduced) {
         await r.video.play();
         soundUI();
       }
-      if (!valid()) { r.video.pause(); r.hls?.stopLoad(); return; }
+      if (!valid()) {
+        // An earlier play promise can resolve after leave + re-enter.
+        // It must not pause the newer request for this same video.
+        if (active !== r || !wanted(r)) { r.video.pause(); r.hls?.stopLoad(); }
+        return;
+      }
       ui(r);
     } catch (error) { if (valid()) fail(r, error.message); }
   };
