@@ -97,7 +97,9 @@ with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
             if line in segments and line != segments[0]:
                 line = f'{RAW}/{slug}/{line}'
             rewritten.append(line)
-        (startup / 'index.m3u8').write_text('\n'.join(rewritten) + '\n')
+        text = '\n'.join(rewritten).replace('URI="init.mp4"', 'URI="init.mp4?v=20261010.3"')
+        text = text.replace('\n' + segments[0] + '\n', '\n' + segments[0] + '?v=20261010.3\n')
+        (startup / 'index.m3u8').write_text(text + '\n')
         audit.append({'id': slug, 'original': asset['name'], 'originalBytes': asset['size'], 'videoCodec': video['codec_name'], 'width': video['width'], 'height': video['height'], 'fps': video['r_frame_rate'], 'duration': float(info['format']['duration']), 'videoPacketHash': original_hash, 'videoUnchanged': True, 'audioOriginal': audio['codec_name'] if audio else None, 'audioPlayback': 'aac' if audio else None, 'startupBytes': (output / 'init.mp4').stat().st_size + sizes[0][0], 'segments': len(segments), 'largestSegmentBytes': max(s for s, _ in sizes)})
         print(json.dumps(audit[-1]), flush=True)
         if not os.environ.get('ZAKI_LOCAL_TEST'):
