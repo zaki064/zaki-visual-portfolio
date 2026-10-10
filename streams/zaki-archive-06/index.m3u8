@@ -3,9 +3,9 @@
 #EXT-X-TARGETDURATION:1
 #EXT-X-MEDIA-SEQUENCE:0
 #EXT-X-PLAYLIST-TYPE:VOD
-#EXT-X-MAP:URI="init.mp4"
+#EXT-X-MAP:URI="init.mp4?v=20261010.3"
 #EXTINF:0.466667,
-s0000.m4s
+s0000.m4s?v=20261010.3
 #EXTINF:0.533333,
 https://raw.githubusercontent.com/zaki064/zaki-visual-portfolio/stream-media-v3/zaki-archive-06/s0001.m4s
 #EXTINF:0.500000,
