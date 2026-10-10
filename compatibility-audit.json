@@ -1,0 +1,53 @@
+{
+  "originalFilesUntouched": true,
+  "assets": [
+    {
+      "id": "zaki-creative-01-compatible",
+      "source": "zaki-creative-01.mov",
+      "decodedPixelHash": "SHA256=44088a7f8e36f9d3a6f47ed4e04674916c7b2f0bc440bc94bece17b21953d85b",
+      "decodedPixelsIdentical": true,
+      "resolutionAndFrameRatePreserved": true,
+      "codec": "vp9",
+      "encoding": "lossless",
+      "audioCopied": true,
+      "totalBytes": 148423599,
+      "startupBytes": 7205594
+    },
+    {
+      "id": "zaki-creative-02-compatible",
+      "source": "zaki-creative-02.mov",
+      "decodedPixelHash": "SHA256=c8efe5ab0d25b926577dbbf6d73c6ed3394bd2d025f31cefc02e9be8669e42eb",
+      "decodedPixelsIdentical": true,
+      "resolutionAndFrameRatePreserved": true,
+      "codec": "vp9",
+      "encoding": "lossless",
+      "audioCopied": true,
+      "totalBytes": 230258523,
+      "startupBytes": 5506564
+    },
+    {
+      "id": "zaki-creative-03-compatible",
+      "source": "zaki-creative-03.mov",
+      "decodedPixelHash": "SHA256=0ba51943f43510bff3147d91b20ae880f63e2ee3cf51d1c1895c589eb715c559",
+      "decodedPixelsIdentical": true,
+      "resolutionAndFrameRatePreserved": true,
+      "codec": "vp9",
+      "encoding": "lossless",
+      "audioCopied": true,
+      "totalBytes": 143259419,
+      "startupBytes": 5581797
+    },
+    {
+      "id": "zaki-creative-04-compatible",
+      "source": "zaki-creative-04.mov",
+      "decodedPixelHash": "SHA256=b87b184e3b0ff84a660c5c47a7e872d83acc2664b8022794362a81a6c9bd058f",
+      "decodedPixelsIdentical": true,
+      "resolutionAndFrameRatePreserved": true,
+      "codec": "vp9",
+      "encoding": "lossless",
+      "audioCopied": true,
+      "totalBytes": 61724477,
+      "startupBytes": 2369245
+    }
+  ]
+}
