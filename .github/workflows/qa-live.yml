@@ -1,0 +1,25 @@
+name: Validate portfolio playback and mobile layout
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install test dependency
+        run: npm install --no-save --package-lock=false playwright@1.56.1
+      - name: Check all original streams and portrait layouts
+        run: node scripts/qa-live.cjs
+      - name: Save test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zaki-browser-checks
+          path: |
+            qa-live-report.json
+            qa-desktop.png
+            qa-mobile.png
+          retention-days: 7
