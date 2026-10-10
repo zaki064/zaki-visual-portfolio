@@ -1,9 +1,9 @@
 {
-  "version": "2026-10-10-stream-v2",
+  "version": "2026-10-10-stream-v3",
   "videoReencoded": false,
   "videoPacketHashesVerified": true,
   "totalOriginalBytes": 2742115319,
-  "startupBytes": 384591468,
+  "startupBytes": 52179430,
   "assets": [
     {
       "id": "zaki-showreel-web",
@@ -18,9 +18,9 @@
       "videoUnchanged": true,
       "audioOriginal": "pcm_f32le",
       "audioPlayback": "aac",
-      "startupBytes": 3095441,
-      "segments": 16,
-      "largestSegmentBytes": 13063224
+      "startupBytes": 639287,
+      "segments": 65,
+      "largestSegmentBytes": 3727538
     },
     {
       "id": "zaki-ai-01",
@@ -35,9 +35,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 5274553,
-      "segments": 6,
-      "largestSegmentBytes": 6919808
+      "startupBytes": 755870,
+      "segments": 26,
+      "largestSegmentBytes": 2137283
     },
     {
       "id": "zaki-ai-02",
@@ -52,9 +52,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 7247751,
-      "segments": 4,
-      "largestSegmentBytes": 8108296
+      "startupBytes": 464112,
+      "segments": 34,
+      "largestSegmentBytes": 1310534
     },
     {
       "id": "zaki-ai-03",
@@ -69,9 +69,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 6654039,
-      "segments": 5,
-      "largestSegmentBytes": 8398799
+      "startupBytes": 1346668,
+      "segments": 45,
+      "largestSegmentBytes": 1398157
     },
     {
       "id": "zaki-ai-04",
@@ -86,9 +86,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 8146955,
-      "segments": 4,
-      "largestSegmentBytes": 8563935
+      "startupBytes": 655857,
+      "segments": 38,
+      "largestSegmentBytes": 1522066
     },
     {
       "id": "zaki-ai-05",
@@ -103,9 +103,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 7517330,
-      "segments": 6,
-      "largestSegmentBytes": 8797074
+      "startupBytes": 1043247,
+      "segments": 52,
+      "largestSegmentBytes": 1482603
     },
     {
       "id": "zaki-ai-06",
@@ -120,9 +120,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 4520388,
-      "segments": 7,
-      "largestSegmentBytes": 6169532
+      "startupBytes": 792633,
+      "segments": 31,
+      "largestSegmentBytes": 1544991
     },
     {
       "id": "zaki-ai-07",
@@ -137,9 +137,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 4794192,
-      "segments": 7,
-      "largestSegmentBytes": 6781668
+      "startupBytes": 932279,
+      "segments": 31,
+      "largestSegmentBytes": 1461107
     },
     {
       "id": "zaki-ai-08",
@@ -154,9 +154,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 8241433,
-      "segments": 4,
-      "largestSegmentBytes": 8240031
+      "startupBytes": 965321,
+      "segments": 38,
+      "largestSegmentBytes": 1141246
     },
     {
       "id": "zaki-ai-09",
@@ -171,9 +171,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 4602975,
-      "segments": 7,
-      "largestSegmentBytes": 6187496
+      "startupBytes": 748683,
+      "segments": 31,
+      "largestSegmentBytes": 1639169
     },
     {
       "id": "zaki-ai-10",
@@ -188,9 +188,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 5152279,
-      "segments": 7,
-      "largestSegmentBytes": 6896391
+      "startupBytes": 895775,
+      "segments": 31,
+      "largestSegmentBytes": 1816986
     },
     {
       "id": "zaki-archive-04",
@@ -205,9 +205,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 3104030,
-      "segments": 9,
-      "largestSegmentBytes": 3725492
+      "startupBytes": 851050,
+      "segments": 35,
+      "largestSegmentBytes": 1109574
     },
     {
       "id": "zaki-archive-05",
@@ -222,9 +222,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 11337384,
-      "segments": 9,
-      "largestSegmentBytes": 11462679
+      "startupBytes": 1929378,
+      "segments": 37,
+      "largestSegmentBytes": 3506215
     },
     {
       "id": "zaki-archive-06",
@@ -239,9 +239,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 8952673,
-      "segments": 7,
-      "largestSegmentBytes": 12854941
+      "startupBytes": 2105710,
+      "segments": 27,
+      "largestSegmentBytes": 4381649
     },
     {
       "id": "zaki-archive-07",
@@ -256,9 +256,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 48391102,
-      "segments": 3,
-      "largestSegmentBytes": 48389699
+      "startupBytes": 5780811,
+      "segments": 24,
+      "largestSegmentBytes": 6182995
     },
     {
       "id": "zaki-archive-08",
@@ -273,9 +273,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 6613450,
-      "segments": 9,
-      "largestSegmentBytes": 7167477
+      "startupBytes": 1256921,
+      "segments": 44,
+      "largestSegmentBytes": 2198493
     },
     {
       "id": "zaki-archive-09",
@@ -290,9 +290,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 6170843,
-      "segments": 12,
-      "largestSegmentBytes": 7835755
+      "startupBytes": 1359508,
+      "segments": 58,
+      "largestSegmentBytes": 2549168
     },
     {
       "id": "zaki-archive-10",
@@ -307,9 +307,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 781896,
-      "segments": 22,
-      "largestSegmentBytes": 2530585
+      "startupBytes": 205478,
+      "segments": 127,
+      "largestSegmentBytes": 503160
     },
     {
       "id": "zaki-archive-11",
@@ -324,9 +324,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 58296130,
-      "segments": 3,
-      "largestSegmentBytes": 59668331
+      "startupBytes": 6930952,
+      "segments": 29,
+      "largestSegmentBytes": 7819098
     },
     {
       "id": "zaki-archive-17",
@@ -341,9 +341,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 6553795,
-      "segments": 60,
-      "largestSegmentBytes": 11154907
+      "startupBytes": 1545216,
+      "segments": 240,
+      "largestSegmentBytes": 3356129
     },
     {
       "id": "zaki-archive-18",
@@ -358,9 +358,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 46602536,
-      "segments": 6,
-      "largestSegmentBytes": 48459320
+      "startupBytes": 5992588,
+      "segments": 53,
+      "largestSegmentBytes": 6775075
     },
     {
       "id": "zaki-archive-19",
@@ -375,9 +375,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 18402618,
-      "segments": 6,
-      "largestSegmentBytes": 20885347
+      "startupBytes": 1813041,
+      "segments": 57,
+      "largestSegmentBytes": 2867294
     },
     {
       "id": "zaki-archive-20",
@@ -392,9 +392,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 39372903,
-      "segments": 10,
-      "largestSegmentBytes": 59738706
+      "startupBytes": 5150743,
+      "segments": 100,
+      "largestSegmentBytes": 7077291
     },
     {
       "id": "zaki-celebrity-01",
@@ -409,9 +409,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 561523,
-      "segments": 9,
-      "largestSegmentBytes": 560123
+      "startupBytes": 88124,
+      "segments": 51,
+      "largestSegmentBytes": 136509
     },
     {
       "id": "zaki-celebrity-02",
@@ -426,9 +426,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 1917742,
-      "segments": 1,
-      "largestSegmentBytes": 1916360
+      "startupBytes": 136199,
+      "segments": 19,
+      "largestSegmentBytes": 173220
     },
     {
       "id": "zaki-celebrity-03",
@@ -443,9 +443,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 6228391,
-      "segments": 23,
-      "largestSegmentBytes": 10636883
+      "startupBytes": 1028721,
+      "segments": 89,
+      "largestSegmentBytes": 4314460
     },
     {
       "id": "zaki-creative-01",
@@ -460,9 +460,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 4510123,
-      "segments": 11,
-      "largestSegmentBytes": 4884304
+      "startupBytes": 996942,
+      "segments": 45,
+      "largestSegmentBytes": 1670460
     },
     {
       "id": "zaki-creative-02",
@@ -477,9 +477,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 4840876,
-      "segments": 11,
-      "largestSegmentBytes": 5072074
+      "startupBytes": 844749,
+      "segments": 45,
+      "largestSegmentBytes": 1783530
     },
     {
       "id": "zaki-creative-03",
@@ -494,9 +494,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 4437292,
-      "segments": 6,
-      "largestSegmentBytes": 4435850
+      "startupBytes": 1099791,
+      "segments": 22,
+      "largestSegmentBytes": 1320931
     },
     {
       "id": "zaki-creative-04",
@@ -511,9 +511,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 4211220,
-      "segments": 8,
-      "largestSegmentBytes": 5640824
+      "startupBytes": 640515,
+      "segments": 30,
+      "largestSegmentBytes": 2744076
     },
     {
       "id": "zaki-promo-01",
@@ -528,9 +528,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 32124891,
-      "segments": 7,
-      "largestSegmentBytes": 32190701
+      "startupBytes": 1729954,
+      "segments": 61,
+      "largestSegmentBytes": 6102193
     },
     {
       "id": "zaki-promo-02",
@@ -545,9 +545,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 2356268,
-      "segments": 8,
-      "largestSegmentBytes": 3493767
+      "startupBytes": 623559,
+      "segments": 32,
+      "largestSegmentBytes": 1187951
     },
     {
       "id": "zaki-promo-03",
@@ -562,9 +562,9 @@
       "videoUnchanged": true,
       "audioOriginal": "aac",
       "audioPlayback": "aac",
-      "startupBytes": 3576446,
-      "segments": 7,
-      "largestSegmentBytes": 4354128
+      "startupBytes": 829748,
+      "segments": 25,
+      "largestSegmentBytes": 1363545
     }
   ]
 }
