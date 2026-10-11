@@ -93,10 +93,17 @@ window.ZakiVideoV2 = function (reduced) {
     });
     return libraryPromise;
   };
+  const nativePreferred = video => /iP(hone|ad|od)/.test(navigator.userAgent) &&
+    video.canPlayType('application/vnd.apple.mpegurl');
   const fail = (r, message) => {
     r.player.removeAttribute('data-loading');
     r.player.setAttribute('data-stream-error', '');
-    status(r, message || '连接较慢，请点击重试。原片仍可打开。');
+    status(r, message || '视频连接失败，请检查播放连接。');
+    const link = document.createElement('a');
+    link.className = 'playback-check-link original-link';
+    link.href = './playback-check.html'; link.target = '_blank'; link.rel = 'noopener';
+    link.textContent = '检查播放连接';
+    r.status.append(document.createTextNode(' '), link);
     ui(r);
   };
   const prepare = async r => {
@@ -108,13 +115,13 @@ window.ZakiVideoV2 = function (reduced) {
     const compatible = r.video.dataset.streamCompatible;
     if (compatible) {
       const Source = window.ManagedMediaSource || window.MediaSource;
-      const appleNative = /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) && r.video.canPlayType('application/vnd.apple.mpegurl');
+      const appleNative = nativePreferred(r.video);
       const hevc = Source?.isTypeSupported('video/mp4; codecs="hvc1.1.6.L123.B0"');
       if (r.forceCompatible || (!appleNative && !hevc)) source = compatible;
     }
     r.video.dataset.selectedStream = source;
     r.loading = (async () => {
-      const native = /iP(hone|ad|od)|Macintosh/.test(navigator.userAgent) && r.video.canPlayType('application/vnd.apple.mpegurl');
+      const native = nativePreferred(r.video);
       if (native) {
         r.native = true;
         r.video.preload = 'metadata';
@@ -133,7 +140,7 @@ window.ZakiVideoV2 = function (reduced) {
       }
       r.hls?.destroy();
       const hls = r.hls = new Hls({
-        autoStartLoad: false, enableWorker: true, progressive: true, startPosition: 0,
+        autoStartLoad: false, enableWorker: false, progressive: true, startPosition: 0,
         maxBufferLength: 6, maxMaxBufferLength: 10, maxBufferSize: 32 * 1024 * 1024,
         backBufferLength: 1, maxFragLookUpTolerance: 0.1,
         manifestLoadPolicy: { default: { maxTimeToFirstByteMs: 8000, maxLoadTimeMs: 12000,
@@ -145,6 +152,9 @@ window.ZakiVideoV2 = function (reduced) {
       });
       hls.on(Hls.Events.ERROR, (_, data) => {
         if (!data.fatal) return;
+        let host = '';
+        try { host = new URL(data.context?.url || data.frag?.url || source, location.href).hostname; } catch (_) {}
+        r.video.dataset.playbackError = JSON.stringify({type:data.type, detail:data.details, host, http:data.response?.code || 0});
         if (compatible && source !== compatible && (data.type === Hls.ErrorTypes.MEDIA_ERROR || /codec/i.test(data.details))) {
           r.forceCompatible = true;
           dispose(r);
@@ -153,7 +163,7 @@ window.ZakiVideoV2 = function (reduced) {
           return;
         }
         if (data.type === Hls.ErrorTypes.MEDIA_ERROR && r.retries++ < 1) hls.recoverMediaError();
-        else fail(r, data.type === Hls.ErrorTypes.MEDIA_ERROR ? '设备暂不支持此原片编码，可点击原片查看。' : '网络连接中断，请点击重试。');
+        else fail(r, data.type === Hls.ErrorTypes.MEDIA_ERROR ? '视频解码失败。请检查播放连接。' : '视频地址连接失败。请检查播放连接。');
       });
       hls.on(Hls.Events.FRAG_BUFFERED, () => {
         // Warm only one fragment. Never download a whole gallery in the background.
