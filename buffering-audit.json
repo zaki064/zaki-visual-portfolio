@@ -1,0 +1,379 @@
+{
+  "version": "20261011.2",
+  "videoReencoded": false,
+  "allFragmentBytesIdentical": true,
+  "oldRequests": 1814,
+  "newRequests": 494,
+  "assets": [
+    {
+      "oldRequests": 26,
+      "newRequests": 8,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=ecc184049b0d592f92b9d03b419e65e209e61ccad50e0ecf8ad6f459c40f4391",
+      "duration": 12.6,
+      "totalBytes": 26263849,
+      "largestSegmentBytes": 6068209,
+      "id": "zaki-ai-01"
+    },
+    {
+      "oldRequests": 34,
+      "newRequests": 10,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=b880e34ac92202e879acb9063a574594050c3595a5180e2d978a3ea522ca359f",
+      "duration": 16.6,
+      "totalBytes": 26113520,
+      "largestSegmentBytes": 4018974,
+      "id": "zaki-ai-02"
+    },
+    {
+      "oldRequests": 45,
+      "newRequests": 12,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=eb1eadfa5d37fa144711207d5d00de860e7fb34c9be2f0ebe95d96c5dc2003ce",
+      "duration": 22.1,
+      "totalBytes": 31843913,
+      "largestSegmentBytes": 3720739,
+      "id": "zaki-ai-03"
+    },
+    {
+      "oldRequests": 38,
+      "newRequests": 11,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=06bcc172d1aa2f6a28d57bf6be1d87692607282b949ecf65b1b91ff986f030e2",
+      "duration": 18.866666,
+      "totalBytes": 28083374,
+      "largestSegmentBytes": 3739315,
+      "id": "zaki-ai-04"
+    },
+    {
+      "oldRequests": 52,
+      "newRequests": 14,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=db3e5ffa135bcd1a4cdb23cad378cd639d3881a8a70797bfcf0ef1d7124f1f21",
+      "duration": 25.666666,
+      "totalBytes": 39798575,
+      "largestSegmentBytes": 3883120,
+      "id": "zaki-ai-05"
+    },
+    {
+      "oldRequests": 31,
+      "newRequests": 9,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=c4d0dd245e36e9dec7ebd34a2e5abfc745d115a6812fdf62459b269be42f4508",
+      "duration": 15.05,
+      "totalBytes": 32061420,
+      "largestSegmentBytes": 4698480,
+      "id": "zaki-ai-06"
+    },
+    {
+      "oldRequests": 31,
+      "newRequests": 9,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=0be03ace4501de245bd2e0572b35d2608225e64d7151fd247b5bbc8b7b59885e",
+      "duration": 15.05,
+      "totalBytes": 32442722,
+      "largestSegmentBytes": 5421918,
+      "id": "zaki-ai-07"
+    },
+    {
+      "oldRequests": 38,
+      "newRequests": 11,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=1ad57469f044deb7249f741de7ca504e7bd218cb89ad7ef28954b8c18603b318",
+      "duration": 18.9,
+      "totalBytes": 29953254,
+      "largestSegmentBytes": 3534967,
+      "id": "zaki-ai-08"
+    },
+    {
+      "oldRequests": 31,
+      "newRequests": 9,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=3499b2ff6cee7995922962d174b77debf3e37ce187ea68403445871d517e689b",
+      "duration": 15.05,
+      "totalBytes": 32272787,
+      "largestSegmentBytes": 4892065,
+      "id": "zaki-ai-09"
+    },
+    {
+      "oldRequests": 31,
+      "newRequests": 9,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=6fd4c247e40e86b95751cadce06aba623cd611d20ac9fd65f8a7a8594c4ede4a",
+      "duration": 15.05,
+      "totalBytes": 30364871,
+      "largestSegmentBytes": 5088535,
+      "id": "zaki-ai-10"
+    },
+    {
+      "oldRequests": 35,
+      "newRequests": 10,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=3d3f2abf0f356a72d51a40c2368bc33654f5af8d8130bbf8962ced616856f371",
+      "duration": 17.366667,
+      "totalBytes": 26847179,
+      "largestSegmentBytes": 3530544,
+      "id": "zaki-archive-04"
+    },
+    {
+      "oldRequests": 37,
+      "newRequests": 10,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=d71b96e415405cfcf7925b8f5d9a9db0c5149d81d7608256142143051acf68e8",
+      "duration": 18.0,
+      "totalBytes": 98142915,
+      "largestSegmentBytes": 11945833,
+      "id": "zaki-archive-05"
+    },
+    {
+      "oldRequests": 27,
+      "newRequests": 8,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=e828873fb46fb8a9e0a3d44d0547d1486c00e7bd0f32191aeb5e3b4d5a22a2a6",
+      "duration": 13.433334,
+      "totalBytes": 76887733,
+      "largestSegmentBytes": 13062070,
+      "id": "zaki-archive-06"
+    },
+    {
+      "oldRequests": 24,
+      "newRequests": 7,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=0b5d198630626adaeef744b4f013a00146a985c3f1c190ce599a9516c1a84801",
+      "duration": 11.833333,
+      "totalBytes": 109423275,
+      "largestSegmentBytes": 20635915,
+      "id": "zaki-archive-07"
+    },
+    {
+      "oldRequests": 44,
+      "newRequests": 12,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=aa4d3bb13ae77da86d18447026c666a426dd63bd69417bb4fbfa908e1c05d566",
+      "duration": 21.633334,
+      "totalBytes": 37768520,
+      "largestSegmentBytes": 6041695,
+      "id": "zaki-archive-08"
+    },
+    {
+      "oldRequests": 58,
+      "newRequests": 16,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=f117d033db9b14de11387502508757af0f8637c0e3c2351a35d82ce8c8bb71ec",
+      "duration": 28.533334,
+      "totalBytes": 59608618,
+      "largestSegmentBytes": 6935584,
+      "id": "zaki-archive-09"
+    },
+    {
+      "oldRequests": 127,
+      "newRequests": 33,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=64f199c64cdeeb44ec591766811d94ba2ce8b3722692c8c9a889671388224d40",
+      "duration": 63.333316999999994,
+      "totalBytes": 23399304,
+      "largestSegmentBytes": 1118566,
+      "id": "zaki-archive-10"
+    },
+    {
+      "oldRequests": 29,
+      "newRequests": 8,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=25d6a0b63ed0ccfdae13901ecc2bb0199bbb445d22b4ab49bb58a69d3396cdb3",
+      "duration": 14.3,
+      "totalBytes": 172504741,
+      "largestSegmentBytes": 25685626,
+      "id": "zaki-archive-11"
+    },
+    {
+      "oldRequests": 240,
+      "newRequests": 61,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=6dc13dd128e1bf70cc2a85d08a4ed1b4318a4fef85e81d2035f1372325d1cf48",
+      "duration": 119.766667,
+      "totalBytes": 390010455,
+      "largestSegmentBytes": 10093272,
+      "id": "zaki-archive-17"
+    },
+    {
+      "oldRequests": 53,
+      "newRequests": 14,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=4ce79af366c75d7b7e2d2be05cf30febadf3503407c118cb08218a8bacebe477",
+      "duration": 26.533333,
+      "totalBytes": 240682068,
+      "largestSegmentBytes": 21569394,
+      "id": "zaki-archive-18"
+    },
+    {
+      "oldRequests": 57,
+      "newRequests": 15,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=cb4bf43fcedbd60cc366c3e632f7a53254838d4098c80178bacb0e1e57c48e0a",
+      "duration": 28.366667,
+      "totalBytes": 102068728,
+      "largestSegmentBytes": 9798470,
+      "id": "zaki-archive-19"
+    },
+    {
+      "oldRequests": 100,
+      "newRequests": 26,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=1103487e4d49d140eab6903e36dbb1832008321fff4db892324286550866e562",
+      "duration": 49.933333,
+      "totalBytes": 450743693,
+      "largestSegmentBytes": 25013050,
+      "id": "zaki-archive-20"
+    },
+    {
+      "oldRequests": 51,
+      "newRequests": 14,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=1c71483388a7ef04ddb2aaef56a61af254e56320be44e8ec882e74a051064701",
+      "duration": 25.333326,
+      "totalBytes": 2999390,
+      "largestSegmentBytes": 299370,
+      "id": "zaki-celebrity-01"
+    },
+    {
+      "oldRequests": 19,
+      "newRequests": 6,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=30c36985322d3a2936110b007e78abdeb7c3edd4874918d9989e2e89882d12da",
+      "duration": 9.133984,
+      "totalBytes": 1919428,
+      "largestSegmentBytes": 436785,
+      "id": "zaki-celebrity-02"
+    },
+    {
+      "oldRequests": 89,
+      "newRequests": 23,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=4023690a3d904d0361419a078cae642fe25831eafb68350685b2ee2bfb872aa1",
+      "duration": 44.2,
+      "totalBytes": 145286170,
+      "largestSegmentBytes": 9321103,
+      "id": "zaki-celebrity-03"
+    },
+    {
+      "oldRequests": 45,
+      "newRequests": 12,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=a47669b445deaef65d630e2466906b2196462b56ec06fb31a8cd38eee61c3669",
+      "duration": 22.303334,
+      "totalBytes": 44897947,
+      "largestSegmentBytes": 4724385,
+      "id": "zaki-creative-01"
+    },
+    {
+      "oldRequests": 45,
+      "newRequests": 12,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=80a949dc0fce3c89004919b4f5bb48d026e4774d84a96807389afe1f97a9b522",
+      "duration": 22.25,
+      "totalBytes": 148423599,
+      "largestSegmentBytes": 18430838,
+      "id": "zaki-creative-01-compatible"
+    },
+    {
+      "oldRequests": 45,
+      "newRequests": 12,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=d5daec4dbfd3a9c406d90afe4245d3eed9afa6072b481857940450940884860e",
+      "duration": 22.270001,
+      "totalBytes": 45403663,
+      "largestSegmentBytes": 5058672,
+      "id": "zaki-creative-02"
+    },
+    {
+      "oldRequests": 45,
+      "newRequests": 12,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=3e8d80a4428d58d09a172ad2157e04261236fcb533297cbaa2ee56b06f2d47a4",
+      "duration": 22.216667,
+      "totalBytes": 230258523,
+      "largestSegmentBytes": 26495040,
+      "id": "zaki-creative-02-compatible"
+    },
+    {
+      "oldRequests": 22,
+      "newRequests": 7,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=3b6fb9551ff4e881b55055f76efcc1e4bac961fff0b2fd4c2a3628353a6f51b1",
+      "duration": 10.893333,
+      "totalBytes": 22142251,
+      "largestSegmentBytes": 4306891,
+      "id": "zaki-creative-03"
+    },
+    {
+      "oldRequests": 22,
+      "newRequests": 7,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=46d91429d0ad811c3a6e7bf25246b7f2d646fe41b82ca8be09104c7067a1f981",
+      "duration": 10.85,
+      "totalBytes": 143259419,
+      "largestSegmentBytes": 55169185,
+      "id": "zaki-creative-03-compatible"
+    },
+    {
+      "oldRequests": 30,
+      "newRequests": 9,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=4c03ad5d587c07c0b8d72202d6fcfa2cec9e7b634f8954d0804d6cca097ffbfa",
+      "duration": 14.91,
+      "totalBytes": 29748329,
+      "largestSegmentBytes": 5765682,
+      "id": "zaki-creative-04"
+    },
+    {
+      "oldRequests": 30,
+      "newRequests": 9,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=e0ebe270ee091f819e7a870925bed36a0f9c4c13b0bef830741f9ac3f531938f",
+      "duration": 14.866667,
+      "totalBytes": 61724477,
+      "largestSegmentBytes": 9654722,
+      "id": "zaki-creative-04-compatible"
+    },
+    {
+      "oldRequests": 61,
+      "newRequests": 16,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=7e751f17f1fa7deb70947d6a7d9cac4f0b350d3ab94ed69fdc00c1933c079648",
+      "duration": 30.333333,
+      "totalBytes": 161961389,
+      "largestSegmentBytes": 15816301,
+      "id": "zaki-promo-01"
+    },
+    {
+      "oldRequests": 32,
+      "newRequests": 9,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=8142c9836ff4a7bfc6e86cd3a55f0c1fe85d78b4dd8274c7a3c6c378ff32628c",
+      "duration": 15.8,
+      "totalBytes": 23529422,
+      "largestSegmentBytes": 3396386,
+      "id": "zaki-promo-02"
+    },
+    {
+      "oldRequests": 25,
+      "newRequests": 7,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=bd09b48a92cb396e901808dfbd87e97bd72f84440001fd1536ddbe13b0318828",
+      "duration": 12.2,
+      "totalBytes": 17652130,
+      "largestSegmentBytes": 4105753,
+      "id": "zaki-promo-03"
+    },
+    {
+      "oldRequests": 65,
+      "newRequests": 17,
+      "fragmentBytesIdentical": true,
+      "videoPacketHash": "SHA256=bff1441d26d63e7266ee9fe44b5ba14df756b51e854349b9ec522b3d1b6b2220",
+      "duration": 32.066667,
+      "totalBytes": 138352113,
+      "largestSegmentBytes": 12594996,
+      "id": "zaki-showreel-web"
+    }
+  ]
+}
