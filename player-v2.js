@@ -97,9 +97,7 @@ window.ZakiVideoV2 = function (reduced) {
         const complete = duration(r) > 0 && r.video.currentTime + available >= duration(r) - 0.18;
         if (r.video.readyState >= 3 && (available >= goal || complete)) return finish(true);
         const pct = goal > 0 ? Math.min(99, Math.round(available / goal * 100)) : 0;
-        status(r, `正在缓冲原画质 · ${pct}%`);
-        if (performance.now() - began > 120000)
-          return finish(false, new Error('原画质视频加载较慢，请点击重试继续缓冲。'));
+        status(r, `${performance.now() - began > 30000 ? '网络较慢，正在积累缓冲' : '正在缓冲原画质'} · ${pct}%`);
         timer = setTimeout(tick, 250);
       };
       tick();
@@ -164,7 +162,7 @@ window.ZakiVideoV2 = function (reduced) {
     if (r.loading) return r.loading;
     r.used = ++clock;
     const generation = r.generation;
-    const streamVersion = url => url?.replace(/([?&])v=[^&]*/, '$1v=20261011.2');
+    const streamVersion = url => url?.replace(/([?&])v=[^&]*/, '$1v=20261011.4');
     let source = streamVersion(r.video.dataset.stream);
     const compatible = streamVersion(r.video.dataset.streamCompatible);
     if (compatible) {
@@ -202,7 +200,7 @@ window.ZakiVideoV2 = function (reduced) {
         manifestLoadPolicy: { default: { maxTimeToFirstByteMs: 8000, maxLoadTimeMs: 12000,
           timeoutRetry: { maxNumRetry: 2, retryDelayMs: 500, maxRetryDelayMs: 2000 },
           errorRetry: { maxNumRetry: 2, retryDelayMs: 500, maxRetryDelayMs: 2000 } } },
-        fragLoadPolicy: { default: { maxTimeToFirstByteMs: 10000, maxLoadTimeMs: 30000,
+        fragLoadPolicy: { default: { maxTimeToFirstByteMs: 10000, maxLoadTimeMs: 60000,
           timeoutRetry: { maxNumRetry: 2, retryDelayMs: 700, maxRetryDelayMs: 2500 },
           errorRetry: { maxNumRetry: 2, retryDelayMs: 700, maxRetryDelayMs: 2500 } } }
       });
@@ -213,6 +211,7 @@ window.ZakiVideoV2 = function (reduced) {
         if (!loading || loading.end <= loading.start) return;
         r.loadSeconds += (loading.end - loading.start) / 1000;
         r.mediaSeconds += data.frag.duration;
+        r.video.dataset.downloadRatio = (r.mediaSeconds / r.loadSeconds).toFixed(2);
         r.loadedBytes += data.stats?.total || data.stats?.loaded || data.frag.stats?.total || 0;
         const bytesPerSecond = r.loadedBytes / r.mediaSeconds;
         if (bytesPerSecond) {
