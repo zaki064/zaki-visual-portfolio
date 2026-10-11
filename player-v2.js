@@ -14,7 +14,7 @@ window.ZakiVideoV2 = function (reduced) {
     focused: false, hovered: false, manual: false, visible: false, pausedByUser: false,
     token: 0, intent: 0, hls: null, loading: null, used: 0, warm: false, retries: 0,
     status: null, sourceReady: false, native: false, full: false, generation: 0, forceCompatible: false,
-    cancelBufferWait: null, loadSeconds: 0, mediaSeconds: 0, duration: 0, recoveries: 0
+    cancelBufferWait: null, loadSeconds: 0, mediaSeconds: 0, loadedBytes: 0, duration: 0, recoveries: 0
   }));
   const listen = (element, event, fn, options) => {
     if (!element) return;
@@ -70,7 +70,9 @@ window.ZakiVideoV2 = function (reduced) {
     // Preserve bitrate, dimensions, frame rate and quality on every route.
     const rate = r.loadSeconds > 0.25 && r.mediaSeconds >= 2 ? r.mediaSeconds / r.loadSeconds : 2;
     const cushion = rate < 1.2 ? Math.max(8, remaining * (1 - Math.min(1, rate)) + 8) : 6;
-    return Math.max(0, Math.min(remaining - 0.18, fine.matches ? 30 : 16,
+    const bytesPerSecond = r.mediaSeconds ? r.loadedBytes / r.mediaSeconds : 0;
+    const memorySeconds = bytesPerSecond ? (fine.matches ? 128 : 48) * 1024 * 1024 / bytesPerSecond : Infinity;
+    return Math.max(0, Math.min(remaining - 0.18, fine.matches ? 30 : 16, memorySeconds,
       Math.max(cushion, r.recoveries ? 12 : 6)));
   };
   const fillBuffer = (r, valid) => {
@@ -127,7 +129,7 @@ window.ZakiVideoV2 = function (reduced) {
     r.loading = null;
     r.sourceReady = false;
     r.native = false;
-    r.loadSeconds = r.mediaSeconds = r.duration = r.recoveries = 0;
+    r.loadSeconds = r.mediaSeconds = r.loadedBytes = r.duration = r.recoveries = 0;
   };
   const boundCache = keep => {
     const loaded = records.filter(r => r.hls || r.native || r.loading).sort((a, b) => b.used - a.used);
@@ -211,6 +213,16 @@ window.ZakiVideoV2 = function (reduced) {
         if (!loading || loading.end <= loading.start) return;
         r.loadSeconds += (loading.end - loading.start) / 1000;
         r.mediaSeconds += data.frag.duration;
+        r.loadedBytes += data.stats?.total || data.stats?.loaded || data.frag.stats?.total || 0;
+        const bytesPerSecond = r.loadedBytes / r.mediaSeconds;
+        if (bytesPerSecond) {
+          // Bound decoded-media buffering as well as the number of players.
+          // High-bitrate 4K clips need a smaller duration budget on phones.
+          const seconds = Math.max(2, Math.min(bufferSeconds,
+            (fine.matches ? 128 : 48) * 1024 * 1024 / bytesPerSecond));
+          hls.config.maxBufferLength = seconds;
+          hls.config.maxMaxBufferLength = seconds + 2;
+        }
       });
       hls.on(Hls.Events.ERROR, (_, data) => {
         if (!data.fatal) return;
