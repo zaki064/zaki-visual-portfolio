@@ -162,7 +162,9 @@ window.ZakiVideoV2 = function (reduced) {
     if (r.loading) return r.loading;
     r.used = ++clock;
     const generation = r.generation;
-    const streamVersion = url => url?.replace(/([?&])v=[^&]*/, '$1v=20261011.4');
+    const streamVersion = url => url?.replace(/^\.\/streams\//,
+      'https://raw.githubusercontent.com/zaki064/zaki-visual-portfolio/stream-media-v3/')
+      .replace(/([?&])v=[^&]*/, '$1v=20261011.5');
     let source = streamVersion(r.video.dataset.stream);
     const compatible = streamVersion(r.video.dataset.streamCompatible);
     if (compatible) {
