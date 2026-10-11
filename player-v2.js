@@ -162,9 +162,7 @@ window.ZakiVideoV2 = function (reduced) {
     if (r.loading) return r.loading;
     r.used = ++clock;
     const generation = r.generation;
-    const streamVersion = url => url?.replace(/^\.\/streams\//,
-      'https://raw.githubusercontent.com/zaki064/zaki-visual-portfolio/stream-media-v3/')
-      .replace(/([?&])v=[^&]*/, '$1v=20261011.5');
+    const streamVersion = url => url?.replace(/([?&])v=[^&]*/, '$1v=20261011.6');
     let source = streamVersion(r.video.dataset.stream);
     const compatible = streamVersion(r.video.dataset.streamCompatible);
     if (compatible) {
@@ -178,7 +176,7 @@ window.ZakiVideoV2 = function (reduced) {
       const native = nativePreferred(r.video);
       if (native) {
         r.native = true;
-        r.video.preload = 'metadata';
+        r.video.preload = 'none';
         r.video.src = source;
         r.sourceReady = true;
         return;
@@ -241,7 +239,7 @@ window.ZakiVideoV2 = function (reduced) {
         else fail(r, data.type === Hls.ErrorTypes.MEDIA_ERROR ? '视频解码失败。请检查播放连接。' : '视频地址连接失败。请检查播放连接。');
       });
       hls.on(Hls.Events.FRAG_BUFFERED, () => {
-        // Warm only one fragment. Never download a whole gallery in the background.
+        // Stop fetching immediately after the viewer leaves this video.
         if (!wanted(r)) { hls.stopLoad(); r.warm = false; }
       });
       hls.attachMedia(r.video);
@@ -264,8 +262,9 @@ window.ZakiVideoV2 = function (reduced) {
       await prepare(r);
       if (destroyed || active) return;
       r.warm = true;
-      r.hls?.startLoad(0);
-      if (r.native) r.video.preload = 'metadata';
+      // Warm the playlist only. High-bitrate pictures stay as posters until
+      // selected, so speculative video transfers can't delay the page.
+      if (r.native) r.video.preload = 'none';
       boundCache(r);
     } catch (_) { /* A speculative warm-up must not show an error. */ }
   };

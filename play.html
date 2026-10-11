@@ -1,11 +1,11 @@
 <!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ZAKI · 播放修正版</title><style>body{background:#111;color:#efb3cb;font:16px system-ui;padding:36px}a{color:inherit}</style><p id="state">正在打开播放修正版…</p><script>
 (async()=>{
  try {
-  const response=await fetch('./index.html?entry=20261011.5',{cache:'no-store'});
+  const response=await fetch('./index.html?entry=20261011.6',{cache:'no-store'});
   if(!response.ok)throw new Error('页面暂时无法连接');
   let html=await response.text();
   if(!html.includes('ZakiVideoV2')&&!html.includes('player-v2.js'))throw new Error('页面版本不正确');
-  html=html.replace(/(player-v2\.js|motion-v2\.js|styles-v2\.css)(\?[^"'\s<>]*)?/g,'$1?v=20261011.5');
+  html=html.replace(/(player-v2\.js|motion-v2\.js|styles-v2\.css)(\?[^"'\s<>]*)?/g,'$1?v=20261011.6');
   const diagnostic='<a href="./playback-check.html" target="_blank" rel="noopener" style="position:fixed;right:16px;bottom:12px;z-index:120;color:#efb3cb;background:#21191f;padding:8px 12px;border-radius:18px;font:12px system-ui">播放遇到问题？检查连接</a>';
   html=html.replace('</body>',diagnostic+'</body>');
   document.open();document.write(html);document.close();
