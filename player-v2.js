@@ -13,7 +13,8 @@ window.ZakiVideoV2 = function (reduced) {
     video, player: video.closest('.video-player'), reel: video.hasAttribute('data-autoplay-reel'),
     focused: false, hovered: false, manual: false, visible: false, pausedByUser: false,
     token: 0, intent: 0, hls: null, loading: null, used: 0, warm: false, retries: 0,
-    status: null, sourceReady: false, native: false, full: false, generation: 0, forceCompatible: false
+    status: null, sourceReady: false, native: false, full: false, generation: 0, forceCompatible: false,
+    cancelBufferWait: null, loadSeconds: 0, mediaSeconds: 0, duration: 0, recoveries: 0
   }));
   const listen = (element, event, fn, options) => {
     if (!element) return;
@@ -54,8 +55,57 @@ window.ZakiVideoV2 = function (reduced) {
       try { if (r.video.currentTime > 0.01) r.video.currentTime = 0; } catch (_) {}
     }
   };
+  const ahead = r => {
+    const time = r.video.currentTime;
+    for (let i = 0; i < r.video.buffered.length; i++) {
+      if (r.video.buffered.start(i) <= time + 0.15 && r.video.buffered.end(i) > time)
+        return r.video.buffered.end(i) - time;
+    }
+    return 0;
+  };
+  const duration = r => Number.isFinite(r.video.duration) ? r.video.duration : r.duration;
+  const bufferGoal = r => {
+    const remaining = Math.max(0, duration(r) - r.video.currentTime);
+    // Build a larger cushion when downloading is slower than playback.
+    // Preserve bitrate, dimensions, frame rate and quality on every route.
+    const rate = r.loadSeconds > 0.25 && r.mediaSeconds >= 2 ? r.mediaSeconds / r.loadSeconds : 2;
+    const cushion = rate < 1.2 ? Math.max(8, remaining * (1 - Math.min(1, rate)) + 8) : 6;
+    return Math.max(0, Math.min(remaining - 0.18, fine.matches ? 30 : 16,
+      Math.max(cushion, r.recoveries ? 12 : 6)));
+  };
+  const fillBuffer = (r, valid) => {
+    r.cancelBufferWait?.();
+    if (r.native) return Promise.resolve(true);
+    return new Promise((resolve, reject) => {
+      const began = performance.now();
+      let timer;
+      const finish = (result, error) => {
+        clearTimeout(timer);
+        if (r.cancelBufferWait === cancel) r.cancelBufferWait = null;
+        delete r.video.dataset.bufferGoal;
+        error ? reject(error) : resolve(result);
+      };
+      const cancel = () => finish(false);
+      r.cancelBufferWait = cancel;
+      const tick = () => {
+        if (!valid()) return finish(false);
+        if (r.player.hasAttribute('data-stream-error')) return finish(false);
+        const available = ahead(r), goal = bufferGoal(r);
+        r.video.dataset.bufferGoal = goal.toFixed(1);
+        const complete = duration(r) > 0 && r.video.currentTime + available >= duration(r) - 0.18;
+        if (r.video.readyState >= 3 && (available >= goal || complete)) return finish(true);
+        const pct = goal > 0 ? Math.min(99, Math.round(available / goal * 100)) : 0;
+        status(r, `正在缓冲原画质 · ${pct}%`);
+        if (performance.now() - began > 120000)
+          return finish(false, new Error('原画质视频加载较慢，请点击重试继续缓冲。'));
+        timer = setTimeout(tick, 250);
+      };
+      tick();
+    });
+  };
   const pause = (r, reset = true) => {
     r.token++;
+    r.cancelBufferWait?.();
     clearTimeout(r.intent);
     r.intent = 0;
     r.video.pause();
@@ -77,6 +127,7 @@ window.ZakiVideoV2 = function (reduced) {
     r.loading = null;
     r.sourceReady = false;
     r.native = false;
+    r.loadSeconds = r.mediaSeconds = r.duration = r.recoveries = 0;
   };
   const boundCache = keep => {
     const loaded = records.filter(r => r.hls || r.native || r.loading).sort((a, b) => b.used - a.used);
@@ -111,8 +162,9 @@ window.ZakiVideoV2 = function (reduced) {
     if (r.loading) return r.loading;
     r.used = ++clock;
     const generation = r.generation;
-    let source = r.video.dataset.stream;
-    const compatible = r.video.dataset.streamCompatible;
+    const streamVersion = url => url?.replace(/([?&])v=[^&]*/, '$1v=20261011.2');
+    let source = streamVersion(r.video.dataset.stream);
+    const compatible = streamVersion(r.video.dataset.streamCompatible);
     if (compatible) {
       const Source = window.ManagedMediaSource || window.MediaSource;
       const appleNative = nativePreferred(r.video);
@@ -139,9 +191,11 @@ window.ZakiVideoV2 = function (reduced) {
         return;
       }
       r.hls?.destroy();
+      const bufferSeconds = fine.matches ? 36 : 20;
       const hls = r.hls = new Hls({
         autoStartLoad: false, enableWorker: false, progressive: true, startPosition: 0,
-        maxBufferLength: 6, maxMaxBufferLength: 10, maxBufferSize: 32 * 1024 * 1024,
+        maxBufferLength: bufferSeconds, maxMaxBufferLength: bufferSeconds + 4,
+        maxBufferSize: (fine.matches ? 160 : 80) * 1024 * 1024,
         backBufferLength: 1, maxFragLookUpTolerance: 0.1,
         manifestLoadPolicy: { default: { maxTimeToFirstByteMs: 8000, maxLoadTimeMs: 12000,
           timeoutRetry: { maxNumRetry: 2, retryDelayMs: 500, maxRetryDelayMs: 2000 },
@@ -149,6 +203,14 @@ window.ZakiVideoV2 = function (reduced) {
         fragLoadPolicy: { default: { maxTimeToFirstByteMs: 10000, maxLoadTimeMs: 30000,
           timeoutRetry: { maxNumRetry: 2, retryDelayMs: 700, maxRetryDelayMs: 2500 },
           errorRetry: { maxNumRetry: 2, retryDelayMs: 700, maxRetryDelayMs: 2500 } } }
+      });
+      hls.on(Hls.Events.LEVEL_LOADED, (_, data) => { r.duration = data.details.totalduration; });
+      hls.on(Hls.Events.FRAG_LOADED, (_, data) => {
+        if (data.frag.sn === 'initSegment') return;
+        const loading = data.stats?.loading || data.frag.stats?.loading;
+        if (!loading || loading.end <= loading.start) return;
+        r.loadSeconds += (loading.end - loading.start) / 1000;
+        r.mediaSeconds += data.frag.duration;
       });
       hls.on(Hls.Events.ERROR, (_, data) => {
         if (!data.fatal) return;
@@ -184,10 +246,10 @@ window.ZakiVideoV2 = function (reduced) {
   const warm = async r => {
     if (destroyed || connection?.saveData || document.hidden || r === active || r.loading || r.sourceReady) return;
     // Do not compete with an active video that is still starting or buffering.
-    if (active && active.video.readyState < 3) return;
+    if (active) return;
     try {
       await prepare(r);
-      if (destroyed) return;
+      if (destroyed || active) return;
       r.warm = true;
       r.hls?.startLoad(0);
       if (r.native) r.video.preload = 'metadata';
@@ -206,7 +268,11 @@ window.ZakiVideoV2 = function (reduced) {
   const play = async r => {
     if (!wanted(r)) return;
     if (r.player.hasAttribute('data-stream-error')) { dispose(r); r.retries = 0; }
-    records.forEach(other => { if (other !== r && (!other.video.paused || other === active)) pause(other); });
+    records.forEach(other => {
+      if (other === r) return;
+      if (!other.video.paused || other === active) pause(other);
+      else other.hls?.stopLoad();
+    });
     active = last = r;
     const token = ++r.token;
     r.used = ++clock;
@@ -219,6 +285,7 @@ window.ZakiVideoV2 = function (reduced) {
       if (!valid()) return;
       r.hls?.startLoad(r.video.currentTime || 0);
       r.video.preload = 'auto';
+      if (!await fillBuffer(r, valid) || !valid()) return;
       r.video.muted = mode === 'muted';
       r.video.volume = 1;
       try { await r.video.play(); }
@@ -313,7 +380,15 @@ window.ZakiVideoV2 = function (reduced) {
       if (!r.video.muted && mode === 'sound') unlocked = true;
       r.player.setAttribute('data-playing', ''); r.player.removeAttribute('data-loading'); status(r); ui(r);
     });
-    listen(r.video, 'waiting', () => { if (wanted(r)) r.player.setAttribute('data-loading', ''); });
+    listen(r.video, 'waiting', () => {
+      if (!wanted(r)) return;
+      r.player.setAttribute('data-loading', '');
+      if (!r.native && !r.video.paused && r.video.currentTime > 0.2 && ahead(r) < 1) {
+        r.recoveries++;
+        r.video.pause();
+        play(r);
+      }
+    });
     listen(r.video, 'pause', () => { r.player.removeAttribute('data-playing'); ui(r); });
     listen(r.video, 'volumechange', () => ui(r));
     listen(r.video, 'error', () => { if (r.video.currentSrc && active === r) fail(r, '设备或网络暂时无法播放，点击重试或原片。'); });
